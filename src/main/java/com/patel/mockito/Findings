@@ -1,0 +1,68 @@
+Question :- What is use of @WebMvcTest
+Answer :-   @WebMvcTest annotation for Unit testing Spring MVC controller
+            This annotation loads only the specified controller and its dependencies only without loading the entire application.
+            The @WebMvcTest annotation auto-configure MockMvc instance as well. So, if you want to use MockMvc then
+            you can directly Autowired MockMvc.
+
+Question:-  What is use of MockMvc
+Answer:-    MockMvc is a Spring Boot test tool class that lets you test controllers without needing to start an HTTP server.
+
+Question:-  What is use of @SpringBootTest
+Answer:-    This annotation creates an application context and loads the full application context.
+            @SpringBootTest will bootstrap the full application context, which means we can @Autowire
+            any bean that's picked up by component scanning into our test.
+
+Question:-  What is use of @MockBean annotation
+Answer:-    @MockBean is a Spring Boot test annotation that is used to add mocks to ApplicationContext.
+            A mock will replace existing bean of the same type define in the context and if no existing bean
+            then new one will be added to context.
+            The @MockBean can be used at field level and class level in unit test classes.
+
+Question:-  What is use of RunWith(SpringRunner.class)
+Answer:-    SpringRunner is an alias for the SpringJUnit4ClassRunner.
+
+Important Notes:-
+            If you are using Junit version < 5, so you have to use @RunWith(SpringRunner.class)
+            for JUnit4
+            and @RunWith(MockitoJUnitRunner.class) if you want to use Mockito.
+
+            If you are using Junit version = 5, so you have to use @ExtendWith(SpringExtension.class)
+            for JUni5
+            and @ExtendWith(MockitoExtension.class) if you want to use Mockito.
+            BUT***
+            If you are using JUnit 5, there’s no need to add the equivalent @ExtendWith(SpringExtension.class) as @SpringBootTest
+            already internally use this annotation.
+
+HOW TO USE MOCKITO WITH JUNIT4 & JUNIT5:-
+            There are different ways to use
+
+Manually:-
+            Creating mocks manually with Mockito::mock works regardless of the Junit
+            version.
+            Example:-
+                        Employee employeeMock = Mockito.mock(Employee.class);
+
+Annotation Based:-
+            Using the @Mock-annotation and the corresponding call to MockitoAnnotations::initMocks to create mocks works regardless of the JUnit version.
+            Example:-
+                        @Before public void initMocks() {
+                                   MockitoAnnotations.initMocks(this);
+                               }
+                        then we can create mock as below
+                        @Mock private ArticleCalculator calculator;
+
+Others ways are already mentioned in "Important Notes"
+
+Lenient :- If you will use Lenient then Mockito will not follow strict stubbing
+           means if there is any unused stubbing is there then it will be ignored.
+           otherwise if you will not use Lenient then it will throw error.
+           Note:-**
+           if we need all the stubs of a mock instance to be lenient then marking it with lenient is redundant,
+           For these types of scenarios Mockito Provides MockSettings interface.
+
+           Example:-
+                        @Mock(lenient = true)
+                        or
+                        AppleService appleService = mock(AppleService.class, withSettings().lenient());
+
+
